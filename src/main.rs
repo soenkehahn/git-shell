@@ -41,12 +41,16 @@ fn main() {
 
 fn to_kdl_pane(input: (String, Vec<String>)) -> String {
     let (command, args) = input;
-    let args = args
-        .into_iter()
-        .map(|arg| format!("\"{arg}\""))
-        .collect::<Vec<_>>()
-        .join(" ");
-    format!(r#"pane {{ command "{command}"; args {args}; }}"#)
+    if args.is_empty() {
+        format!(r#"pane {{ command "{command}"; }}"#)
+    } else {
+        let args = args
+            .into_iter()
+            .map(|arg| format!("\"{arg}\""))
+            .collect::<Vec<_>>()
+            .join(" ");
+        format!(r#"pane {{ command "{command}"; args {args}; }}"#)
+    }
 }
 
 #[derive(Debug, Clone, Copy)]
