@@ -98,10 +98,14 @@ fn status(vcs_type: VcsType) -> (String, Vec<String>) {
         ),
         VcsType::Jujutsu => (
             "/usr/bin/watch".to_string(),
-            "jj status --color always"
-                .split_whitespace()
-                .map(ToString::to_string)
-                .collect(),
+            vec![
+                "bash",
+                "-c",
+                "\\\"jj status --color always && jj diff --color always\\\"",
+            ]
+            .into_iter()
+            .map(ToString::to_string)
+            .collect(),
         ),
     }
 }
